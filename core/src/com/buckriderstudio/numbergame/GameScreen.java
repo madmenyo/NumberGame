@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -19,36 +17,44 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import java.security.Key;
 
 /**
  * Created by Menyo on 1/8/2015.
  */
 public class GameScreen implements Screen {
-    Stage stage;
-    Skin skin;
-    TextureAtlas atlas;
-    SpriteBatch batch;
+    private Stage stage;
+    public Stage getStage() {
+        return stage;
+    }
 
-    final GameScreen gameScreen;
+    private Skin skin;
+    public Skin getSkin() {
+        return skin;
+    }
 
-    int buttonSize;
+    private TextureAtlas atlas;
+    private SpriteBatch batch;
 
-    Table keyPad;
+    private final GameScreen gameScreen;
+
+    private int buttonSize;
+
+    private Table keyPad;
     private Label display;
     public Label getDisplay() {
         return display;
     }
 
-    Dialog dialog;
+    private ActionResolver resolver;
 
-    ActionResolver resolver;
-
-    boolean hardMode;
+    private boolean hardMode;
 
 
+    /**
+     * Creates the game screen
+     * @param hardMode Hard or Easy mode?
+     * @param resolver Resolver to communicate between modules
+     */
     public GameScreen(final boolean hardMode, final ActionResolver resolver)
     {
         this.hardMode = hardMode;
@@ -56,7 +62,6 @@ public class GameScreen implements Screen {
         gameScreen = this;
 
         Gdx.input.setCatchBackKey(true);
-
 
         batch = new SpriteBatch();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
@@ -76,7 +81,14 @@ public class GameScreen implements Screen {
         keyPad.row();
         keyPad.add(title).colspan(3).width(stage.getWidth() - stage.getWidth() / 4);
 
+        addKeyPad();
 
+        stage.addActor(keyPad);
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private void addKeyPad()
+    {
         display = new Label("", skin, "display");
         display.setAlignment(Align.center);
 
@@ -125,19 +137,12 @@ public class GameScreen implements Screen {
                 }
             }
         });
-
-
-        stage.addActor(keyPad);
-        //stage.addActor(dialog);
-        Gdx.input.setInputProcessor(stage);
     }
 
-    private void showDialog()
-    {
-
-    }
-
-
+    /**
+     * Adds a "digit" button to the screen
+     * @param number what to display on the button and outputs when clicked.
+     */
     private void addDigit(final String number)
     {
         TextButton button = new TextButton(number, skin);

@@ -12,12 +12,9 @@ import com.buckriderstudio.numbergame.ActionResolver;
 import com.buckriderstudio.numbergame.DialogCreator;
 import com.buckriderstudio.numbergame.GameScreen;
 import com.buckriderstudio.numbergame.NumberGame;
-import com.buckriderstudio.numbergame.android.R;
-
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -50,15 +47,14 @@ public class AndroidLauncher extends AndroidApplication
     private static final int RC_SIGN_IN = 9001;
 
     // tag for debug logging
-    final boolean ENABLE_DEBUG = true;
-    final String TAG = "MainActivity";
+    private final boolean ENABLE_DEBUG = true;
+    private final String TAG = "MainActivity";
 
     // achievements and scores we're pending to push to the cloud
     // (waiting for the user to sign in, for instance)
     AccomplishmentsOutbox mOutbox = new AccomplishmentsOutbox();
 
     private InterstitialAd mInterstitialAd;
-    private AdView mAdView;
 
 
     @Override
@@ -66,14 +62,6 @@ public class AndroidLauncher extends AndroidApplication
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         initialize(new NumberGame(this), config);
-
-        //Banner
-        /*
-        mAdView = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        */
-
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad));
@@ -91,6 +79,9 @@ public class AndroidLauncher extends AndroidApplication
 
     }
 
+    /**
+     * Request a new interstitial ad and attempts to load it
+     */
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
@@ -112,6 +103,10 @@ public class AndroidLauncher extends AndroidApplication
         }
     }
 
+    /**
+     * Is the user signed in?
+     * @return
+     */
     private boolean isSignedIn()
     {
         return (mGoogleApiClient != null && mGoogleApiClient.isConnected());
@@ -163,16 +158,12 @@ public class AndroidLauncher extends AndroidApplication
         }
         Gdx.app.log(TAG, "Hello, " + displayName);
 
-        // if we have accomplishments to push, push them
-/*
-        if (!mOutbox.isEmpty()) {
-            pushAccomplishments();
-            Toast.makeText(this, getString(R.string.your_progress_will_be_uploaded),
-                    Toast.LENGTH_LONG).show();
-        }
-*/
+        // if we have accomplishments saved, we can push them here
     }
 
+    /**
+     * Pushes accomplishments to Google play services. Here you have to change the ID's or add them in ids.xml
+     */
     void pushAccomplishments() {
         if (!isSignedIn()) {
             // can't push to the cloud, so save locally
@@ -300,6 +291,11 @@ public class AndroidLauncher extends AndroidApplication
         }
     }
 
+    /**
+     * Used to check if the number is a prime number to check for achievement Prime.
+     * @param n
+     * @return
+     */
     boolean isPrime(int n) {
         int i;
         if (n == 0 || n == 1) return false;
@@ -340,6 +336,7 @@ public class AndroidLauncher extends AndroidApplication
             //achievementToast(getString(R.string.achievement_leet_toast_text));
             DialogCreator.AchievementDialog(screen, finalScore + "\n" + getString(R.string.achievement_leet_toast_text));
         }
+        //Further below are my own achievements I added.
         else if (finalScore == 666) {
             mOutbox.mDevilAchievement = true;
             //achievementToast(getString(R.string.achievement_leet_toast_text));
@@ -378,6 +375,9 @@ public class AndroidLauncher extends AndroidApplication
     }
 
 
+    /**
+     * Opens up the leaderboard
+     */
     @Override
     public void getLeaderboard() {
         if (isSignedIn()) {
@@ -389,6 +389,9 @@ public class AndroidLauncher extends AndroidApplication
 
     }
 
+    /**
+     * opens up the achievements
+     */
     @Override
     public void getAchievements() {
         if (isSignedIn()) {
@@ -400,8 +403,9 @@ public class AndroidLauncher extends AndroidApplication
     }
 
 
-
-
+    /**
+     * Class to store achievements to push later.
+     */
     class AccomplishmentsOutbox {
         boolean mPrimeAchievement = false;
         boolean mHumbleAchievement = false;
@@ -438,6 +442,9 @@ public class AndroidLauncher extends AndroidApplication
 
     }
 
+    /**
+     * Shows a interstitial add, this can only be done on the UI thread.
+     */
     @Override
     public void showInterstitialAd() {
         runOnUiThread(new Runnable() {

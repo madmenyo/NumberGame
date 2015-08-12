@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.XmlReader;
 
 public class NumberGame extends Game {
-    public static ActionResolver actionResolver;
+    private ActionResolver actionResolver;
 
     public NumberGame(ActionResolver actionResolver)
     {

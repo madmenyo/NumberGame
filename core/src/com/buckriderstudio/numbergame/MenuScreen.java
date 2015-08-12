@@ -16,21 +16,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
- * Created by Menyo on 1/8/2015.
+ * Created by Menno Gouw on 1/8/2015.
  */
 public class MenuScreen implements Screen {
-    SpriteBatch batch;
-    Stage stage;
-    Skin skin;
-    TextureAtlas atlas;
+    private SpriteBatch batch;
+    private Stage stage;
+    private Skin skin;
+    private TextureAtlas atlas;
+    private Table table;
 
-    ActionResolver resolver;
+    private ActionResolver resolver;
 
-    boolean hardMode;
+    private boolean hardMode;
 
+    /**
+     * Creates a menu screen
+     * @param resolver the resolver that communicates between the different modules
+     */
     public MenuScreen(final ActionResolver resolver)
     {
         this.resolver = resolver;
@@ -41,11 +45,20 @@ public class MenuScreen implements Screen {
         atlas = new TextureAtlas("skin.pack");
         skin = new Skin(Gdx.files.internal("skin.json"), atlas);
 
-        Table table = new Table();
+        table = new Table();
         //table.setDebug(true);
         table.setFillParent(true);
         table.center().top();
 
+        addTitle();
+        addButtons();
+
+        Gdx.input.setInputProcessor(stage);
+        stage.addActor(table);
+    }
+
+    private void addTitle()
+    {
         Label title = new Label("NumberLympics", skin, "large");
         table.add(title).pad(10);
         table.row();
@@ -54,7 +67,10 @@ public class MenuScreen implements Screen {
         label.setAlignment(Align.center);
         table.add(label).pad(20).width(stage.getWidth() - stage.getWidth() / 4);
         table.row();
+    }
 
+    private void addButtons()
+    {
         final TextButton mode = new TextButton("Easy", skin, "small");
         table.add(mode).width(stage.getWidth() / 2).pad(20);
         table.row();
@@ -140,10 +156,6 @@ public class MenuScreen implements Screen {
 
         table.add(showAdd).width(stage.getWidth() / 2).pad(20);
 
-
-
-        Gdx.input.setInputProcessor(stage);
-        stage.addActor(table);
     }
 
     @Override
