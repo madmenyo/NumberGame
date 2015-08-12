@@ -1,0 +1,24 @@
+{
+    com.badlogic.gdx.graphics.g2d.BitmapFont: {
+        default-font: { file: font/font64.fnt },
+        small-font: { file: font/font48.fnt }
+     },
+    com.badlogic.gdx.graphics.Color: {
+        white: { a: 1, r: 1, g: 1, b: 1 }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+    	dialogDim: { name: display, color: { r: 0, g: 0, b: 0, a: 0.45 } },
+    }
+    com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+        default: { down: key, up: key, font: default-font, fontColor: white },
+        small: { down: display, up: display, font: small-font, fontColor: white },
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+        default: { font: small-font, fontColor: white },
+        large: { font: default-font, fontColor: white },
+    	display: { background: display, font: default-font, fontColor: white }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+    	dialog: { titleFont: small-font, background: display, titleFontColor: white, stageBackground: dialogDim }
+    },
+}
