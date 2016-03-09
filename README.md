@@ -1,7 +1,7 @@
 # NumberGame
 Google NumberGame example implemented using LibGDX
 
-I removed the entire android/res/values/ folder from the project to mask my sensitive ID's. You basically need the very same Google Playe Service setup as in Googles default android example. When you have setup your leaderboards and achievements you can grab all the Id's and paste them in android/res/values/ids.xml. I did not alter strings.xml as in the example except for adding a view of my own achievements in it. [Google has a handy tool to add all the achievements and leaderboards to your play service app.](http://playgameservices.github.io/android-basic-samples/config-magic/index.html?sample=typeanumber) you just ened to supply your ID.
+I removed the entire android/res/values/ folder from the project to mask my sensitive ID's. You basically need the very same Google Playe Service setup as in Googles default android example. When you have setup your leaderboards and achievements you can grab all the Id's and paste them in android/res/values/ids.xml. I did not alter strings.xml as in the example except for adding a view of my own achievements in it. [Google has a handy tool to add all the achievements and leaderboards to your play service app.](http://playgameservices.github.io/android-basic-samples/config-magic/index.html?sample=typeanumber) you just need to supply your ID.
 
 Other then that it's a completely functional mimic of the NumberGame created with the LibGDX framework. Use this as reference to get familiar with integrating Google's play services into LibGDX.
 
